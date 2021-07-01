@@ -5,6 +5,8 @@ import discord
 import requests
 import time
 from discord.ext import commands
+from discord.ext.commands import Cog, Group, Command, HelpCommand
+
 
 bot = commands.Bot(command_prefix="-f ", description=" ")
 
@@ -16,6 +18,18 @@ fast = " "
 rapid = " "
 
 
+class HelpCommand(HelpCommand):
+    async def send_bot_help(self, mapping):
+        message = ("`-f help =>` this command" + 
+            "\n`-f btc =>` show fees of Bitcoin network" + 
+            "\n`-f gas =>` show fees of Ethereum network")
+
+        await self.get_destination().send(message)
+
+bot.help_command = HelpCommand()
+
+
+#COMMANDS
 @bot.command()
 async def btc(ctx):
     #------------------------------------------
@@ -57,7 +71,7 @@ async def gas(ctx):
     await ctx.send(embed=embed)
     time.sleep(15)
 
-#Eventos:
+#EVENTS:
 @bot.event
 async def on_ready():
     print("BOT Ready")
